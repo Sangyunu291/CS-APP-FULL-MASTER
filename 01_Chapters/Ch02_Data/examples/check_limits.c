@@ -1,3 +1,5 @@
+/* [컴퓨터, 컴파일러에 따른 자료형의 최소, 최대치를 확인하는 프로그램] */
+
 #include <stdio.h>
 #include <limits.h>
 
