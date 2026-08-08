@@ -1,6 +1,7 @@
 #include "cache.h"
 
 
+int CACHE_EVICTION = 2;
 int CACHE_HIT = 1;
 int CACHE_MISS = 0;
 
@@ -22,12 +23,13 @@ void set_init(Set *set, int entry_num)
         Entry_init(&(set->entry_arr[i]));
 }
 
-void cache_init(Cache* cache, Cache_address* cache_address_parser, int set_num, int entry_num)
-{
-    int i;
 
+void cache_init(Cache* cache, Cache_address* cache_address_parser, int entry_num)
+{
+    int i, set_num;
     cache->entry_num = entry_num;
     cache->cache_address_parser = cache_address_parser;
+    set_num = (int)pow(2, cache->cache_address_parser->set_bit_num);
     cache->set_arr = malloc(sizeof(Set)*set_num);
     
     for (i = 0; i < set_num; i++)
@@ -64,13 +66,13 @@ int cache_load(Cache* cache, unsigned long start_address, int size)
     }
 
     else {
-        /*LRU간단구현*/
         for (i = 0; i < cache->entry_num; i++) {
             if (entry_arr[LRU_index].LRU_field > entry_arr[i].LRU_field)
                 LRU_index = i;
         }
         entry_arr[LRU_index].tag = tag;
         entry_arr[LRU_index].LRU_field = cache->set_arr[set].visit_cnt;
+        return CACHE_EVICTION;
     }
     
     return CACHE_MISS;
@@ -78,7 +80,5 @@ int cache_load(Cache* cache, unsigned long start_address, int size)
 
 int cache_store(Cache* cache, unsigned long start_address, int size)
 {
-          
-    
-
+    return cache_load(cache, start_address, size);    
 }
