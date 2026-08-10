@@ -20,8 +20,8 @@ int EVIC_CNT = 0;
 
 void count_cache_res(int cache_res)
 {
-    if (cache_res == 0) MISS_CNT++;
-    else if (cache_res == 1) HIT_CNT++;
+    if (cache_res == CACHE_MISS) MISS_CNT++;
+    else if (cache_res == CACHE_HIT) HIT_CNT++;
     else {EVIC_CNT++; MISS_CNT++;}
 }
 
@@ -35,8 +35,6 @@ int main(int argc, char **argv)
     block_bit_num = atoi(argv[BLOCK_INDEX]);
     tag_bit_num = ADDRESS_SIZE - (set_bit_num + block_bit_num);
     fp = fopen(argv[TRACE_FILE_INDEX], "r");
-
-    //printf("%d %d %d %d %d\n", set_bit_num, entry_num, block_bit_num, tag_bit_num, set_bit_num+tag_bit_num+block_bit_num);
 
     Cache *cache = malloc(sizeof(Cache));
     Cache_address *cache_address = malloc(sizeof(Cache_address));
@@ -75,5 +73,8 @@ int main(int argc, char **argv)
 
     fclose(fp);
     printSummary(HIT_CNT, MISS_CNT, EVIC_CNT);
+
+    free_cache(cache);
+
     return 0;
 }

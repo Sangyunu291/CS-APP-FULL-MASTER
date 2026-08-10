@@ -82,3 +82,16 @@ int cache_store(Cache* cache, unsigned long start_address, int size)
 {
     return cache_load(cache, start_address, size);    
 }
+
+void free_cache(Cache* cache)
+{
+    int i, set_num;
+    Set *set_arr = cache->set_arr;
+    set_num = (int)pow(2, cache->cache_address_parser->set_bit_num);
+    for (i = 0; i < set_num; i++) {
+        free(set_arr[i].entry_arr);
+    }
+    free(set_arr);
+    free(cache->cache_address_parser);
+    free(cache);
+}

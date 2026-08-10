@@ -3,6 +3,10 @@
 #include <limits.h>
 #include <math.h>
 
+extern int CACHE_EVICTION;
+extern int CACHE_HIT;
+extern int CACHE_MISS;
+
 typedef struct _Entry {
     int valid_bit;
     unsigned long tag;
@@ -27,6 +31,6 @@ void set_init(Set* set, int entry_num);
 void cache_init(Cache* cache, Cache_address* cache_address_parser, int entry_num);
 int cache_load(Cache* cache, unsigned long start_address, int size);
 int cache_store(Cache* cache, unsigned long start_address, int size);
-
+void free_cache(Cache* cache);
 
 
