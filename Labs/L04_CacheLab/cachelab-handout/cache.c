@@ -63,6 +63,7 @@ int cache_load(Cache* cache, unsigned long start_address, int size)
         empty_entry->valid_bit = 1;
         empty_entry->tag = tag;
         empty_entry->LRU_field = cache->set_arr[set].visit_cnt;
+        return CACHE_MISS;
     }
 
     else {
@@ -74,8 +75,6 @@ int cache_load(Cache* cache, unsigned long start_address, int size)
         entry_arr[LRU_index].LRU_field = cache->set_arr[set].visit_cnt;
         return CACHE_EVICTION;
     }
-    
-    return CACHE_MISS;
 }
 
 int cache_store(Cache* cache, unsigned long start_address, int size)
